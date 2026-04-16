@@ -19,13 +19,7 @@ COPY artifacts/mockup-sandbox/package.json      ./artifacts/mockup-sandbox/
 COPY artifacts/mysticism-web/package.json       ./artifacts/mysticism-web/
 COPY lib/                                       ./lib/
 
-# Trên ARM64: xoá các dòng override loại trừ esbuild ARM binary
-# (pnpm-workspace.yaml được thiết kế cho x64 Replit, cần patch để build trên ARM)
-RUN ARCH=$(uname -m) && \
-    if [ "$ARCH" = "aarch64" ]; then \
-      sed -i '/"esbuild>@esbuild\/linux-arm/d' pnpm-workspace.yaml && \
-      echo "Patched pnpm-workspace.yaml for ARM64"; \
-    fi
+
 
 RUN pnpm install --no-frozen-lockfile
 
