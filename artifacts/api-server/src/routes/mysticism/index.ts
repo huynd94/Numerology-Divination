@@ -78,19 +78,16 @@ router.post("/mysticism/ai-interpret", async (req, res) => {
       usingServerKey = true;
     }
 
-    // Kiểm tra rate limit khi dùng server key
-    if (usingServerKey) {
-      const ip = getClientIP(req);
-      const rl = await checkAndLogUsage(ip);
-      if (!rl.allowed) {
-        if (!res.writableEnded) {
-          res.write(`data: ${JSON.stringify({ content: `Bạn đã đạt giới hạn sử dụng AI. Giới hạn: ${rl.limitPerHour} lượt/giờ, ${rl.limitPerDay} lượt/ngày. Vui lòng thử lại sau hoặc nhập API key riêng trong phần Cài đặt AI.` })}\n\n`);
-          res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
-          res.end();
-        }
-        req.off("close", onClose);
-        return;
+    const ip = getClientIP(req);
+    const rl = await checkAndLogUsage(ip);
+    if (!rl.allowed) {
+      if (!res.writableEnded) {
+        res.write(`data: ${JSON.stringify({ content: `Bạn đã đạt giới hạn sử dụng AI. Giới hạn: ${rl.limitPerHour} lượt/giờ, ${rl.limitPerDay} lượt/ngày. Vui lòng thử lại sau.` })}\n\n`);
+        res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+        res.end();
       }
+      req.off("close", onClose);
+      return;
     }
 
     if (resolvedProvider === "gemini") {

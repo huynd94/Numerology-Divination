@@ -208,7 +208,7 @@ export function AISettingsModal({ open, onClose }: Props) {
 
           {/* Privacy notice */}
           <div className="bg-primary/5 border border-primary/15 rounded-lg px-4 py-3 text-xs text-muted-foreground leading-relaxed">
-            Khóa API cá nhân được lưu trong trình duyệt và chỉ gửi đến máy chủ khi gọi AI. Chúng tôi không lưu trữ khóa của bạn.
+            Khóa API cá nhân chỉ giữ trong bộ nhớ phiên hiện tại và chỉ gửi đến máy chủ khi gọi AI. Reload trang sẽ cần nhập lại khóa.
           </div>
 
           {/* Admin section */}

@@ -100,6 +100,10 @@ process.env.DATABASE_URL ??= "postgres://test:test@127.0.0.1:5432/test";
     denyIdx < insertIdx,
     "429 denial branch must appear BEFORE db.insert(messagesTable, ...)",
   );
+  assert.ok(
+    !/if\s*\(\s*usingServerKey\s*\)\s*\{[\s\S]*?checkAndLogUsage\s*\(/.test(handlerSrc),
+    "AI requests with user-provided keys must still pass through checkAndLogUsage",
+  );
 }
 
 // ───────────────────────── 2. Behavioral harness ────────────────────────

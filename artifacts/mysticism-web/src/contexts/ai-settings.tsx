@@ -54,10 +54,14 @@ function loadSettings(): AISettings {
     const saved = JSON.parse(raw);
     // migrate cũ "default" → "server"
     if (saved.provider === "default") saved.provider = "server";
-    return { ...defaultSettings, ...saved };
+    return { ...defaultSettings, ...saved, openaiKey: "", geminiKey: "" };
   } catch {
     return defaultSettings;
   }
+}
+
+function persistedSettings(settings: AISettings): AISettings {
+  return { ...settings, openaiKey: "", geminiKey: "" };
 }
 
 const AISettingsContext = createContext<AISettingsContextValue>({
@@ -86,7 +90,7 @@ export function AISettingsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(persistedSettings(settings)));
   }, [settings]);
 
   const updateSettings = (next: Partial<AISettings>) => {

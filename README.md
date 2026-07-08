@@ -754,8 +754,7 @@ Hệ thống đã trải qua **2 đợt audit bảo mật toàn diện** (8 task
 
 - Body HTTP giới hạn **64 kB** (`express.json({ limit })`). Request lớn hơn trả 413.
 - Mỗi field chat/reading có cap thêm qua zod: `title ≤ 200`, `notes ≤ 2000`, `message.content ≤ 4000`, `context ≤ 8000`, JSON `input_data`/`result_data` ≤ 32 kB mỗi field.
-- Khi dùng **key hệ thống**, rate limit theo IP (mặc định 20/giờ, 100/ngày). Tính atomic bằng `pg_advisory_xact_lock` nên không bị bypass dưới tải song song.
-- Khi user dùng key riêng (OpenAI/Gemini của họ), không bị rate limit — chi phí tự họ chịu.
+- Mọi lượt gọi AI đều bị rate limit theo IP (mặc định 20/giờ, 100/ngày), kể cả khi user dùng key riêng. Tính atomic bằng `pg_advisory_xact_lock` nên không bị bypass dưới tải song song.
 
 #### CORS
 

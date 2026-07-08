@@ -11,9 +11,6 @@ RUN corepack enable
 
 WORKDIR /app
 
-# Override minimumReleaseAge để pnpm install không bị chặn trong Docker
-RUN echo "minimum-release-age=0" > /root/.npmrc
-
 # Copy workspace manifest và tsconfig root trước để tận dụng layer cache
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./
 

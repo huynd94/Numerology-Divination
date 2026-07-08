@@ -137,17 +137,15 @@ router.post("/openai/conversations/:id/messages", async (req, res) => {
     usingServerKey = true;
   }
 
-  if (usingServerKey) {
-    const ip = getClientIP(req);
-    const rl = await checkAndLogUsage(ip);
-    if (!rl.allowed) {
-      res.status(429).json({
-        error: "Rate limit exceeded",
-        limitPerHour: rl.limitPerHour,
-        limitPerDay: rl.limitPerDay,
-      });
-      return;
-    }
+  const ip = getClientIP(req);
+  const rl = await checkAndLogUsage(ip);
+  if (!rl.allowed) {
+    res.status(429).json({
+      error: "Rate limit exceeded",
+      limitPerHour: rl.limitPerHour,
+      limitPerDay: rl.limitPerDay,
+    });
+    return;
   }
 
   // All gates passed — persist the user message, then open the SSE stream.
